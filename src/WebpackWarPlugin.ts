@@ -4,7 +4,7 @@ import Plugin = webpack.Plugin;
 
 import { resolve, extname, posix } from 'path';
 const normalize = posix.normalize;
-import { createWriteStream } from 'fs';
+import { createReadStream, createWriteStream } from 'fs';
 import * as archiver from 'archiver';
 import { green, bold, red } from 'colors/safe';
 import * as filesize from 'filesize';
@@ -45,7 +45,7 @@ export class WebpackWarPlugin implements Plugin {
 
       Object.getOwnPropertyNames(compilation.assets).forEach(asset => {
         const srcPath = resolve(outputPath, asset);
-        archive.append(srcPath, { name: normalize(asset) });
+        archive.append(createReadStream(srcPath), { name: normalize(asset) });
       });
 
       additionalElements.forEach(({ path, destPath }) => {
@@ -54,7 +54,7 @@ export class WebpackWarPlugin implements Plugin {
         if (lstatSync(srcPath).isDirectory()) {
           archive.directory(srcPath, destPath || normalize(path));
         } else {
-          archive.append(srcPath, { name: destPath || normalize(path) });
+          archive.append(createReadStream(srcPath), { name: destPath || normalize(path) });
         }
       });
 

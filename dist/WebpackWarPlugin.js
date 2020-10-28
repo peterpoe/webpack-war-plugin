@@ -28,7 +28,7 @@ class WebpackWarPlugin {
             archive.pipe(outStream);
             Object.getOwnPropertyNames(compilation.assets).forEach(asset => {
                 const srcPath = path_1.resolve(outputPath, asset);
-                archive.append(srcPath, { name: normalize(asset) });
+                archive.append(fs_1.createReadStream(srcPath), { name: normalize(asset) });
             });
             additionalElements.forEach(({ path, destPath }) => {
                 const srcPath = path_1.resolve(context, path);
@@ -36,7 +36,7 @@ class WebpackWarPlugin {
                     archive.directory(srcPath, destPath || normalize(path));
                 }
                 else {
-                    archive.append(srcPath, { name: destPath || normalize(path) });
+                    archive.append(fs_1.createReadStream(srcPath), { name: destPath || normalize(path) });
                 }
             });
             outStream.on('close', () => {
