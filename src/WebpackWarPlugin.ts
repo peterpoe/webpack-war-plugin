@@ -15,7 +15,7 @@ export type WebpackWarPluginOptions = {
   archiveName?: string,
   webInf?: string,
   additionalElements?: { path: string, destPath?: string }[],
-  archiverOptions?: archiver.Options,
+  archiverOptions?: archiver.ArchiverOptions,
 }
 
 export class WebpackWarPlugin implements Plugin {
